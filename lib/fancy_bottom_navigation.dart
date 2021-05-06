@@ -22,6 +22,7 @@ class FancyBottomNavigation extends StatefulWidget {
       this.activeIconColor,
       this.inactiveIconColor,
       this.textColor,
+      this.inactiveTextColor,
       this.barBackgroundColor})
       : assert(onTabChangedListener != null),
         assert(tabs != null),
@@ -32,6 +33,7 @@ class FancyBottomNavigation extends StatefulWidget {
   final Color? activeIconColor;
   final Color? inactiveIconColor;
   final Color? textColor;
+  final Color? inactiveTextColor;
   final Color? barBackgroundColor;
   final List<TabData> tabs;
   final int initialSelection;
@@ -54,6 +56,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
   late Color circleColor;
   late Color activeIconColor;
   late Color inactiveIconColor;
+  late Color inactiveTextColor;
   late Color barBackgroundColor;
   late Color textColor;
 
@@ -78,6 +81,10 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
             ? Color(0xFF212121)
             : Colors.white);
     textColor = widget.textColor ??
+        ((Theme.of(context).brightness == Brightness.dark)
+            ? Colors.white
+            : Colors.black54);
+    inactiveTextColor = (widget.inactiveTextColor) ??
         ((Theme.of(context).brightness == Brightness.dark)
             ? Colors.white
             : Colors.black54);
@@ -127,7 +134,7 @@ class FancyBottomNavigationState extends State<FancyBottomNavigation>
                     iconData: t.iconData,
                     title: t.title,
                     iconColor: inactiveIconColor,
-                    textColor: textColor,
+                    textColor: t.key == widget.tabs[currentSelected].key ? textColor : inactiveTextColor,
                     callbackFunction: (uniqueKey) {
                       int selected = widget.tabs
                           .indexWhere((tabData) => tabData.key == uniqueKey);
